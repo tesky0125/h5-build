@@ -2,31 +2,30 @@
 
 var program = require('commander');
 
+/**
+ * h5-build cli
+ * --release --compress --watch --config --verbose --cache
+ * --debug --port --config --verbose --cache
+ */
 program
-  .option('-v, --version', 'build version number')
-  .option('-l, --library <islib>', 'build target is library or business project')
-  .option('-d, --debug <isdebug>', 'release or debug mode')
-  .option('-p, --port [port]', 'debug port')
-  .option('--outputPath <outputPath>', 'webpack output path')
-  .option('--publicPath <publicPath>', 'webpack public path')
-  .option('-w, --watch [delay]', 'watch file changes and rebuild')
-  .option('--hash', 'build with hash and output map.json')
-  .option('--publicPath <publicPath>', 'publicPath for webpack')
-  .option('--devtool <devtool>', 'sourcemap generate method, default is null')
+  .option('--debug [value]', 'debug or release mode', false)
+  .option('--port [port]', 'debug port', 3000)
+  .option('--watch [value]', 'watch file changes and rebuild', false)
+  .option('--cache', 'cache file')
+  .option('--compress', 'compress build result')
   .option('--config <path>', 'custom config path, default is webpack.config.js')
-  .option('--no-compress','build without compress')
   .option('--verbose', 'run with more logging messages.')
   .parse(process.argv);
 
 program.cwd = process.cwd();
 
-if (program.watch) {
-  require('../lib/build').default(program);
-} else {
-  // console.log('err:',require('../lib/build').default)
+if(program.debug){
+  require('../lib/debug').default(program);
+}else{
   require('../lib/build').default(program, function () {
-    process.exit(0);
+    if(!program.watch){
+      process.exit(0);
+    }
   });
 }
 
-// require('atool-monitor').emit();
