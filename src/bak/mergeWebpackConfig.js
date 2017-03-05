@@ -13,7 +13,7 @@ function mergeCustomConfig(webpackConfig, customConfigPath, args) {
   if (typeof customConfig === 'function') {
     return {
       ...webpackConfig,
-      ...customConfig(webpackConfig, args)/* override default config */
+      ...customConfig(webpackConfig, args).webpack()/* override default config */
     }
   }
 
@@ -66,7 +66,7 @@ export default function(args) {
     new webpack.NoErrorsPlugin(),
   ];
 
-  webpackConfig = mergeCustomConfig(webpackConfig, resolve(args.cwd, args.config || 'webpack.config.js'), args);
+  webpackConfig = mergeCustomConfig(webpackConfig, resolve(args.cwd, args.config || 'config.js'), args);
 
   return webpackConfig;
 }

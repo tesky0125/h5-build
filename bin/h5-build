@@ -18,14 +18,20 @@ program
   .parse(process.argv);
 
 program.cwd = process.cwd();
+console.log('h5-build cwd:',process.cwd())
 
 if(program.debug){
-  require('../lib/debug').default(program);
+  require('../src/start')(program);
 }else{
-  require('../lib/build').default(program, function () {
+  require('../lib/bak/build')(program, function () {
     if(!program.watch){
       process.exit(0);
     }
   });
+  // require('../lib/bak/build').default(program, function () {
+  //   if(!program.watch){
+  //     process.exit(0);
+  //   }
+  // });
 }
 
